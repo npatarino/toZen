@@ -1,4 +1,4 @@
-package io.npatarino.tozen.framework.data.local
+package io.npatarino.tozen.framework.data.datasource.local
 
 import java.io.File
 

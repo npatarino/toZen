@@ -8,8 +8,8 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import io.npatarino.tozen.data.datasource.net.errors.NetError
 import io.npatarino.tozen.domain.business.Task
-import io.npatarino.tozen.framework.data.Datasource
-import io.npatarino.tozen.framework.data.errors.DiskError
+import io.npatarino.tozen.framework.data.datasource.Datasource
+import io.npatarino.tozen.framework.data.datasource.errors.DiskError
 import io.npatarino.tozen.framework.domain.types.Either
 import io.npatarino.tozen.framework.domain.types.Future
 import io.npatarino.tozen.framework.domain.types.asyncFuture
@@ -29,7 +29,7 @@ class FirebaseDatasource : Datasource<NetError, Task> {
 
     override fun all(): Future<List<Either<NetError, Task>>> = Future(async {
         val snapshot: DataSnapshot = suspendCoroutine { cont: Continuation<DataSnapshot> ->
-            taskReference.addValueEventListener(object : ValueEventListener {
+            taskReference.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(error: DatabaseError) {
                     cont.resumeWithException(IOException("Error retrieving data"))
                 }

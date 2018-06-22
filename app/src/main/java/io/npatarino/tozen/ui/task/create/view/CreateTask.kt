@@ -9,17 +9,17 @@ import android.view.View
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import io.npatarino.tozen.R
+import io.npatarino.tozen.data.datasource.net.FirebaseDatasource
+import io.npatarino.tozen.data.repository.TaskRepository
 import io.npatarino.tozen.domain.business.Task
-import io.npatarino.tozen.domain.repository.TaskRepository
-import io.npatarino.tozen.domain.repository.error.RepositoryError
-import io.npatarino.tozen.framework.domain.types.Either
-import io.npatarino.tozen.framework.domain.types.Future
+import io.npatarino.tozen.framework.data.datasource.local.DiskDatasource
+import io.npatarino.tozen.framework.data.datasource.local.MoshiJsonConverter
+import io.npatarino.tozen.framework.data.datasource.local.ReadableFolder
+import io.npatarino.tozen.framework.domain.business.generateId
 import io.npatarino.tozen.ui.task.create.presenter.CreateTaskPresenter
 import kotlinx.android.synthetic.main.activity_create_task.*
 import kotlinx.android.synthetic.main.content_create_task.*
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.async
-import org.jetbrains.anko.toast
+import java.io.File
 
 class CreateTask : AppCompatActivity(), CreateTaskView {
 
@@ -27,12 +27,13 @@ class CreateTask : AppCompatActivity(), CreateTaskView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        presenter = CreateTaskPresenter(this, object : TaskRepository {
-            override fun save(task: Task): Future<Either<RepositoryError, Task>> = Future(async(CommonPool) {
-                toast(task.toString()).show()
-                Either.Right(task)
-            })
-        }, { Log.e(this.javaClass.name, it) }) // TODO: Make logging more functional
+
+        val diskDatasource =
+                DiskDatasource(ReadableFolder(File("tasks")), MoshiJsonConverter(Task::class.java), generateId)
+
+        presenter = CreateTaskPresenter(this, TaskRepository(FirebaseDatasource(), diskDatasource), {
+            Log.e(this.javaClass.name, it)
+        }) // TODO: Make logging more functional
         setContentView(R.layout.activity_create_task)
         setSupportActionBar(toolbar)
     }

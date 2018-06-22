@@ -1,4 +1,4 @@
-package io.npatarino.tozen.framework.data.errors
+package io.npatarino.tozen.framework.data.datasource.errors
 
 sealed class DiskError {
 

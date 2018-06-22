@@ -1,6 +1,6 @@
-package io.npatarino.tozen.framework.data.local
+package io.npatarino.tozen.framework.data.datasource.local
 
-import io.npatarino.tozen.framework.data.errors.DiskError
+import io.npatarino.tozen.framework.data.datasource.errors.DiskError
 import io.npatarino.tozen.framework.domain.types.Either
 
 interface JsonConverter<Item> {

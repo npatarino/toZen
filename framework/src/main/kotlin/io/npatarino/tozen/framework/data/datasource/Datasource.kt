@@ -1,6 +1,6 @@
-package io.npatarino.tozen.framework.data
+package io.npatarino.tozen.framework.data.datasource
 
-import io.npatarino.tozen.framework.data.errors.DiskError
+import io.npatarino.tozen.framework.data.datasource.errors.DiskError
 import io.npatarino.tozen.framework.domain.types.Either
 import io.npatarino.tozen.framework.domain.types.Future
 

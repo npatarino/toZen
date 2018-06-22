@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import io.npatarino.tozen.R
+import io.npatarino.tozen.data.datasource.net.FirebaseDatasource
+import io.npatarino.tozen.domain.business.Task
 import io.npatarino.tozen.ui.task.create.view.CreateTask
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -18,16 +20,12 @@ class Main : AppCompatActivity() {
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
-//        FirebaseDatasource().all()
-
-        //        FirebaseDatasource().save(Task("123456", " Reject the idea that it’s cool to be aloof, detached, or unemotional"))
-
-
+        FirebaseDatasource().all()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
-        inflater.inflate(R.menu.menu_main, menu) //your file name
+        inflater.inflate(R.menu.menu_main, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
