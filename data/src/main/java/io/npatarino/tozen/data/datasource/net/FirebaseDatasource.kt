@@ -1,4 +1,4 @@
-package io.npatarino.tozen.ui.home
+package io.npatarino.tozen.data.datasource.net
 
 import android.util.Log
 import com.google.firebase.database.DataSnapshot
@@ -14,13 +14,10 @@ import io.npatarino.tozen.framework.domain.types.Either
 import io.npatarino.tozen.framework.domain.types.Future
 import io.npatarino.tozen.framework.domain.types.asyncFuture
 import io.npatarino.tozen.framework.domain.types.right
-import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.async
-import kotlinx.coroutines.experimental.delay
 import java.io.IOException
 import kotlin.coroutines.experimental.Continuation
 import kotlin.coroutines.experimental.suspendCoroutine
-
 
 class FirebaseDatasource : Datasource<NetError, Task> {
 
@@ -30,9 +27,8 @@ class FirebaseDatasource : Datasource<NetError, Task> {
 
     private val taskReference: DatabaseReference = FirebaseDatabase.getInstance().reference.child(TASKS)
 
-    override fun all(): Future<List<Either<NetError, Task>>> = Future(async(CommonPool) {
+    override fun all(): Future<List<Either<NetError, Task>>> = Future(async {
         val snapshot: DataSnapshot = suspendCoroutine { cont: Continuation<DataSnapshot> ->
-            Thread.sleep(10000)
             taskReference.addValueEventListener(object : ValueEventListener {
                 override fun onCancelled(error: DatabaseError) {
                     cont.resumeWithException(IOException("Error retrieving data"))
@@ -49,23 +45,14 @@ class FirebaseDatasource : Datasource<NetError, Task> {
         listOf(Either.Left(NetError.Unknown))
     })
 
-    //    override fun save(item: Task): Future<Either<NetError, Task>> = Future.asyncFuture {
-    //        // TODO: Handle errors
-    //        val key: String? = taskReference.push().key
-    //        val postValues = item.toMap()
-    //        val childUpdate: Map<String, Any> = hashMapOf("/$key" to postValues)
-    //        taskReference.updateChildren(childUpdate)
-    //        item.copy(id = key ?: "").right()
-    //    }
-
-    override fun save(item: Task): Future<Either<NetError, Task>> = Future(async(CommonPool) {
+    override fun save(item: Task): Future<Either<NetError, Task>> = Future.asyncFuture {
         // TODO: Handle errors
         val key: String? = taskReference.push().key
         val postValues = item.toMap()
         val childUpdate: Map<String, Any> = hashMapOf("/$key" to postValues)
         taskReference.updateChildren(childUpdate)
         item.copy(id = key ?: "").right()
-    })
+    }
 
     override fun delete(fileName: String): String {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
