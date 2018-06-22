@@ -6,6 +6,9 @@ import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.ProgressBar
+import android.widget.RelativeLayout
 import io.npatarino.tozen.R
 import io.npatarino.tozen.ui.task.create.view.CreateTask
 import kotlinx.android.synthetic.main.activity_main.*
@@ -17,6 +20,10 @@ class Main : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+
+        FirebaseDatasource().all()
+
+        //        FirebaseDatasource().save(Task("123456", " Reject the idea that it’s cool to be aloof, detached, or unemotional"))
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
