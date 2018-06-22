@@ -28,21 +28,17 @@ class FirebaseDatasource : Datasource<NetError, Task> {
     private val taskReference: DatabaseReference = FirebaseDatabase.getInstance().reference.child(TASKS)
 
     override fun all(): Future<List<Either<NetError, Task>>> = Future(async {
-        val snapshot: DataSnapshot = suspendCoroutine { cont: Continuation<DataSnapshot> ->
+        suspendCoroutine { cont: Continuation<List<Either<NetError, Task>>> ->
             taskReference.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(error: DatabaseError) {
                     cont.resumeWithException(IOException("Error retrieving data"))
                 }
 
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    cont.resume(dataSnapshot)
+                    cont.resume(dataSnapshot.toListTask())
                 }
             })
         }
-
-        Log.e("Sync", snapshot.toString())
-
-        listOf(Either.Left(NetError.Unknown))
     })
 
     override fun save(item: Task): Future<Either<NetError, Task>> = Future.asyncFuture {
