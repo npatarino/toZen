@@ -15,3 +15,5 @@ fun save(taskTitle: String, taskRepository: Repository<Task>, generateId: () -> 
         it.bimap({ TaskError.TaskNotValid(task) }, { it })
     }
 }
+
+fun all(taskRepository: Repository<Task>) = taskRepository.all()

@@ -8,4 +8,5 @@ interface Repository<Item> {
 
     fun save(item: Item): Future<Either<RepositoryError, Item>>
 
+    fun all(): Future<Either<RepositoryError, List<Item>>>
 }

@@ -5,4 +5,5 @@ import io.npatarino.tozen.domain.business.Task
 interface ToDoView {
 
     fun addTasks(items: List<Task>)
+    fun showError()
 }
