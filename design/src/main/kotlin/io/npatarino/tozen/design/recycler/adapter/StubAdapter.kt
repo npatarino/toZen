@@ -52,6 +52,10 @@ abstract class StubAdapter<Item> constructor(items: List<Item>,
         notifyItemInserted(items.size)
     }
 
+    fun add(items: List<Item>) {
+        items.forEach { add(it) }
+    }
+
     fun remove(position: Int) {
         items.toMutableList().removeAt(position)
         notifyItemRemoved(position)
