@@ -20,8 +20,10 @@ class CreateTaskPresenter(private val view: CreateTaskView,
             it.fold({
                         when (it) {
                             is TaskError.TaskNotValid -> view.showTaskTitleNotValidError()
-                            TaskError.TitleNotValid   -> view.showTaskDescriptionNotValidError()
-                        }
+                            TaskError.TitleNotValid   -> view.showTaskTitleNotValidError()
+                            TaskError.IdNotValid      -> view.showTaskIdNotValidError()
+                            TaskError.DescriptionNotValid -> view.showTaskDescriptionNotValidError()
+                        }.let {  }
                     }, {
                 view.finish()
             })

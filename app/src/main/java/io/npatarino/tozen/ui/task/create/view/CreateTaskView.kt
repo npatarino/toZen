@@ -6,5 +6,6 @@ interface CreateTaskView {
     fun finish()
     fun showTaskTitleNotValidError()
     fun showTaskDescriptionNotValidError()
+    fun showTaskIdNotValidError()
 
 }

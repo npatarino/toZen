@@ -12,11 +12,15 @@ import io.npatarino.tozen.R
 import io.npatarino.tozen.data.datasource.net.FirebaseDatasource
 import io.npatarino.tozen.data.repository.TaskRepository
 import io.npatarino.tozen.design.extensions.toast
+import io.npatarino.tozen.design.extensions.uiFuture
 import io.npatarino.tozen.domain.business.Task
 import io.npatarino.tozen.framework.data.datasource.local.DiskDatasource
 import io.npatarino.tozen.framework.data.datasource.local.MoshiJsonConverter
 import io.npatarino.tozen.framework.data.datasource.local.ReadableFolder
 import io.npatarino.tozen.framework.domain.business.generateId
+import io.npatarino.tozen.framework.domain.types.Future
+import io.npatarino.tozen.framework.domain.types.asyncFuture
+import io.npatarino.tozen.framework.domain.types.runAsync
 import io.npatarino.tozen.ui.task.create.presenter.CreateTaskPresenter
 import kotlinx.android.synthetic.main.activity_create_task.*
 import kotlinx.android.synthetic.main.content_create_task.*
@@ -63,10 +67,14 @@ class CreateTask : AppCompatActivity(), CreateTaskView {
     }
 
     override fun showTaskTitleNotValidError() {
-        toast("Title not valid")
+        Future.uiFuture { toast("Title not valid") }.runAsync { }
     }
 
     override fun showTaskDescriptionNotValidError() {
-        toast("Description not valid")
+        Future.uiFuture { toast("Description not valid") }.runAsync { }
+    }
+
+    override fun showTaskIdNotValidError() {
+        Future.uiFuture { toast("Id not valid") }.runAsync { }
     }
 }
