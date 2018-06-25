@@ -11,6 +11,7 @@ import android.widget.RelativeLayout
 import io.npatarino.tozen.R
 import io.npatarino.tozen.data.datasource.net.FirebaseDatasource
 import io.npatarino.tozen.data.repository.TaskRepository
+import io.npatarino.tozen.design.extensions.toast
 import io.npatarino.tozen.domain.business.Task
 import io.npatarino.tozen.framework.data.datasource.local.DiskDatasource
 import io.npatarino.tozen.framework.data.datasource.local.MoshiJsonConverter
@@ -22,7 +23,6 @@ import kotlinx.android.synthetic.main.content_create_task.*
 import java.io.File
 
 class CreateTask : AppCompatActivity(), CreateTaskView {
-
     private lateinit var presenter: CreateTaskPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,8 +46,9 @@ class CreateTask : AppCompatActivity(), CreateTaskView {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
         R.id.menu_save -> {
-            val text = editTextTitle.text.toString()
-            presenter.onSaveTaskPressed(text)
+            val title = editTextTitle.text.toString()
+            val description = editTextDescription.text.toString()
+            presenter.onSaveTaskPressed(title, description)
             true
         }
         else           -> super.onOptionsItemSelected(item)
@@ -59,5 +60,13 @@ class CreateTask : AppCompatActivity(), CreateTaskView {
         params.addRule(RelativeLayout.CENTER_IN_PARENT)
         rootContent.addView(progressBar, params)
         progressBar.visibility = View.VISIBLE
+    }
+
+    override fun showTaskTitleNotValidError() {
+        toast("Title not valid")
+    }
+
+    override fun showTaskDescriptionNotValidError() {
+        toast("Description not valid")
     }
 }

@@ -8,9 +8,10 @@ import io.npatarino.tozen.framework.domain.types.map
 
 typealias FutureTask = Future<Either<TaskError, Task>>
 
-fun save(taskTitle: String, taskRepository: Repository<Task>, generateId: () -> String): FutureTask {
+fun save(taskTitle: String, taskDescription: String, taskRepository: Repository<Task>, generateId: () -> String):
+        FutureTask {
     val id = generateId()
-    val task = Task(id, taskTitle)
+    val task = Task(id, taskTitle, taskDescription)
     return taskRepository.save(task).map {
         it.bimap({ TaskError.TaskNotValid(task) }, { it })
     }

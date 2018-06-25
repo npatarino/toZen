@@ -1,3 +1,3 @@
 package io.npatarino.tozen.domain.business
 
-data class Task(val id: String, val title: String)
+data class Task(val id: String, val title: String, val description:String)
